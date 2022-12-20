@@ -32,12 +32,12 @@ void loop()
   {
     Serial.print("VELOCIDAD:");
     Serial.println(UNO_velocidad_Y.VELOCIDAD);
-    Serial.print(",");
-    Serial.print("PWM:");
-    Serial.print(UNO_velocidad_Y.PWM);
-    Serial.print(",");
-    Serial.print("ERROR:");
-    Serial.println(UNO_velocidad_Y.ERROR);
+    // Serial.print(",");
+    // Serial.print("PWM:");
+    // Serial.print(UNO_velocidad_Y.PWM);
+    // Serial.print(",");
+    // Serial.print("ERROR:");
+    // Serial.println(UNO_velocidad_Y.ERROR);
     start = millis();
   }
   delay(0.5);
