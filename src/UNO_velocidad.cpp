@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'UNO_velocidad'.
  *
- * Model version                  : 1.4
+ * Model version                  : 1.5
  * Simulink Coder version         : 9.5 (R2021a) 14-Nov-2020
- * C/C++ source code generated on : Mon Dec 19 21:53:39 2022
+ * C/C++ source code generated on : Tue Dec 20 08:53:18 2022
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Custom Processor->Custom Processor
@@ -39,27 +39,28 @@ void UNO_velocidad_step(void)
   real_T rtb_FilterCoefficient;
 
   /* Sum: '<Root>/Add2' incorporates:
+   *  Constant: '<Root>/Constant1'
    *  Constant: '<Root>/Constant3'
    *  Constant: '<Root>/Constant4'
    *  Constant: '<Root>/Constant5'
-   *  Constant: '<Root>/Constant7'
    *  Delay: '<Root>/Delay2'
    *  Inport: '<Root>/PPMICRO'
+   *  Product: '<Root>/Divide1'
    *  Product: '<Root>/Divide3'
    *  Product: '<Root>/Divide4'
    *  Product: '<Root>/Product'
    *  Product: '<Root>/Product1'
-   *  Sum: '<Root>/Add1'
    */
   int pulsos = 0;
   noInterrupts();
   pulsos = UNO_velocidad_U.PPMICRO;
   interrupts();
   long currT = micros();
-  float deltaT = ((float)(currT - prevT)) / 1.0e6;
+  float deltaT = currT - prevT;
 
-  UNO_velocidad_Y.VELOCIDAD = (pulsos - pulsos_prev) / deltaT / 374.0 * 60.0 * 0.001 +
-                              0.999 * UNO_velocidad_Y.VELOCIDAD;
+  UNO_velocidad_Y.VELOCIDAD = ((pulsos - pulsos_prev) / deltaT) * 1.0E+6 / 374.0 * 60.0 *
+                                  0.001 +
+                              UNO_velocidad_ConstB.Add1 * UNO_velocidad_Y.VELOCIDAD;
 
   prevT = currT;
   pulsos_prev = pulsos;

@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'UNO_velocidad'.
  *
- * Model version                  : 1.4
+ * Model version                  : 1.5
  * Simulink Coder version         : 9.5 (R2021a) 14-Nov-2020
- * C/C++ source code generated on : Mon Dec 19 21:53:39 2022
+ * C/C++ source code generated on : Tue Dec 20 08:53:18 2022
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Custom Processor->Custom Processor
@@ -39,6 +39,11 @@ typedef struct {
   real_T Filter_DSTATE;                /* '<S28>/Filter' */
 } DW_UNO_velocidad_T;
 
+/* Invariant block signals (default storage) */
+typedef struct {
+  const real_T Add1;                   /* '<Root>/Add1' */
+} ConstB_UNO_velocidad_T;
+
 /* External inputs (root inport signals with default storage) */
 typedef struct {
   real_T SET_POINT;                    /* '<Root>/SET_POINT' */
@@ -65,6 +70,7 @@ extern ExtU_UNO_velocidad_T UNO_velocidad_U;
 
 /* External outputs (root outports fed by signals with default storage) */
 extern ExtY_UNO_velocidad_T UNO_velocidad_Y;
+extern const ConstB_UNO_velocidad_T UNO_velocidad_ConstB;/* constant block i/o */
 
 /* Model entry point functions */
 extern void UNO_velocidad_initialize(void);

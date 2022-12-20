@@ -1,5 +1,5 @@
 /*
- * File: rtmodel.h
+ * File: UNO_velocidad_data.c
  *
  * Code generated for Simulink model 'UNO_velocidad'.
  *
@@ -13,15 +13,13 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_rtmodel_h_
-#define RTW_HEADER_rtmodel_h_
 #include "UNO_velocidad.h"
+#include "UNO_velocidad_private.h"
 
-/* Macros generated for backwards compatibility  */
-#ifndef rtmGetStopRequested
-#define rtmGetStopRequested(rtm)       ((void*) 0)
-#endif
-#endif                                 /* RTW_HEADER_rtmodel_h_ */
+/* Invariant block signals (default storage) */
+const ConstB_UNO_velocidad_T UNO_velocidad_ConstB = {
+  0.999                                /* '<Root>/Add1' */
+};
 
 /*
  * File trailer for generated code.
