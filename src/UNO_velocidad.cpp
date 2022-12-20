@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.5
  * Simulink Coder version         : 9.5 (R2021a) 14-Nov-2020
- * C/C++ source code generated on : Tue Dec 20 08:53:18 2022
+ * C/C++ source code generated on : Tue Dec 20 09:15:28 2022
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Custom Processor->Custom Processor
@@ -39,26 +39,28 @@ void UNO_velocidad_step(void)
   real_T rtb_FilterCoefficient;
 
   /* Sum: '<Root>/Add2' incorporates:
-   *  Constant: '<Root>/Constant1'
    *  Constant: '<Root>/Constant3'
-   *  Constant: '<Root>/Constant4'
-   *  Constant: '<Root>/Constant5'
+   *  Constant: '<Root>/MICRO'
+   *  Constant: '<Root>/MINUTO'
+   *  Constant: '<Root>/PPR'
    *  Delay: '<Root>/Delay2'
    *  Inport: '<Root>/PPMICRO'
-   *  Product: '<Root>/Divide1'
-   *  Product: '<Root>/Divide3'
-   *  Product: '<Root>/Divide4'
+   *  Product: '<Root>/2RPM'
+   *  Product: '<Root>/2RPS'
+   *  Product: '<Root>/2SEC'
    *  Product: '<Root>/Product'
    *  Product: '<Root>/Product1'
    */
+
   int pulsos = 0;
   noInterrupts();
   pulsos = UNO_velocidad_U.PPMICRO;
   interrupts();
   long currT = micros();
-  float deltaT = currT - prevT;
+  float deltaT = (float)(currT - prevT);
+  float speed = (float)(pulsos - pulsos_prev) / deltaT;
 
-  UNO_velocidad_Y.VELOCIDAD = ((pulsos - pulsos_prev) / deltaT) * 1.0E+6 / 374.0 * 60.0 *
+  UNO_velocidad_Y.VELOCIDAD = speed * 1.0E+6 / 374.0 * 60.0 *
                                   0.001 +
                               UNO_velocidad_ConstB.Add1 * UNO_velocidad_Y.VELOCIDAD;
 
@@ -76,7 +78,7 @@ void UNO_velocidad_step(void)
    *  Gain: '<S27>/Derivative Gain'
    *  Sum: '<S28>/SumD'
    */
-  rtb_FilterCoefficient = (0.0 * UNO_velocidad_Y.ERROR -
+  rtb_FilterCoefficient = (0.01 * UNO_velocidad_Y.ERROR -
                            UNO_velocidad_DW.Filter_DSTATE) *
                           1000.0;
 
@@ -84,7 +86,7 @@ void UNO_velocidad_step(void)
    *  DiscreteIntegrator: '<S33>/Integrator'
    *  Gain: '<S38>/Proportional Gain'
    */
-  UNO_velocidad_Y.PWM = (1.22 * UNO_velocidad_Y.ERROR +
+  UNO_velocidad_Y.PWM = (1.24 * UNO_velocidad_Y.ERROR +
                          UNO_velocidad_DW.Integrator_DSTATE) +
                         rtb_FilterCoefficient;
 
@@ -109,8 +111,7 @@ void UNO_velocidad_step(void)
   /* Update for DiscreteIntegrator: '<S33>/Integrator' incorporates:
    *  Gain: '<S30>/Integral Gain'
    */
-  UNO_velocidad_DW.Integrator_DSTATE += 2.2592592592592591 *
-                                        UNO_velocidad_Y.ERROR * 0.0005;
+  UNO_velocidad_DW.Integrator_DSTATE += 2.5 * UNO_velocidad_Y.ERROR * 0.0005;
 
   /* Update for DiscreteIntegrator: '<S28>/Filter' */
   UNO_velocidad_DW.Filter_DSTATE += 0.0005 * rtb_FilterCoefficient;
