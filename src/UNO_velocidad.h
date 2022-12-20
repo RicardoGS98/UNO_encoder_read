@@ -5,17 +5,16 @@
  *
  * Model version                  : 1.4
  * Simulink Coder version         : 9.5 (R2021a) 14-Nov-2020
- * C/C++ source code generated on : Mon Dec 19 21:42:51 2022
+ * C/C++ source code generated on : Mon Dec 19 21:53:39 2022
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: Custom Processor->Custom Processor
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
 
 #ifndef RTW_HEADER_UNO_velocidad_h_
 #define RTW_HEADER_UNO_velocidad_h_
-#include <stddef.h>
 #ifndef UNO_velocidad_COMMON_INCLUDES_
 #define UNO_velocidad_COMMON_INCLUDES_
 #include "rtwtypes.h"
@@ -24,7 +23,6 @@
 #endif                                 /* UNO_velocidad_COMMON_INCLUDES_ */
 
 #include "UNO_velocidad_types.h"
-#include "MW_target_hardware_resources.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetErrorStatus
@@ -54,58 +52,10 @@ typedef struct {
   real_T VELOCIDAD;                    /* '<Root>/VELOCIDAD' */
 } ExtY_UNO_velocidad_T;
 
-/* Parameters (default storage) */
-struct P_UNO_velocidad_T_ {
-  real_T DiscretePIDController_D;     /* Mask Parameter: DiscretePIDController_D
-                                       * Referenced by: '<S27>/Derivative Gain'
-                                       */
-  real_T DiscretePIDController_I;     /* Mask Parameter: DiscretePIDController_I
-                                       * Referenced by: '<S30>/Integral Gain'
-                                       */
-  real_T DiscretePIDController_InitialCo;
-                              /* Mask Parameter: DiscretePIDController_InitialCo
-                               * Referenced by: '<S28>/Filter'
-                               */
-  real_T DiscretePIDController_Initial_f;
-                              /* Mask Parameter: DiscretePIDController_Initial_f
-                               * Referenced by: '<S33>/Integrator'
-                               */
-  real_T DiscretePIDController_N;     /* Mask Parameter: DiscretePIDController_N
-                                       * Referenced by: '<S36>/Filter Coefficient'
-                                       */
-  real_T DiscretePIDController_P;     /* Mask Parameter: DiscretePIDController_P
-                                       * Referenced by: '<S38>/Proportional Gain'
-                                       */
-  real_T Constant3_Value;              /* Expression: 0.001
-                                        * Referenced by: '<Root>/Constant3'
-                                        */
-  real_T Constant7_Value;              /* Expression: 1
-                                        * Referenced by: '<Root>/Constant7'
-                                        */
-  real_T Delay2_InitialCondition;      /* Expression: 0.0
-                                        * Referenced by: '<Root>/Delay2'
-                                        */
-  real_T Constant4_Value;              /* Expression: 374
-                                        * Referenced by: '<Root>/Constant4'
-                                        */
-  real_T Constant5_Value;              /* Expression: 60
-                                        * Referenced by: '<Root>/Constant5'
-                                        */
-  real_T Integrator_gainval;           /* Computed Parameter: Integrator_gainval
-                                        * Referenced by: '<S33>/Integrator'
-                                        */
-  real_T Filter_gainval;               /* Computed Parameter: Filter_gainval
-                                        * Referenced by: '<S28>/Filter'
-                                        */
-};
-
 /* Real-time Model Data Structure */
 struct tag_RTM_UNO_velocidad_T {
   const char_T *errorStatus;
 };
-
-/* Block parameters (default storage) */
-extern P_UNO_velocidad_T UNO_velocidad_P;
 
 /* Block states (default storage) */
 extern DW_UNO_velocidad_T UNO_velocidad_DW;
@@ -123,8 +73,6 @@ extern void UNO_velocidad_terminate(void);
 
 /* Real-time Model object */
 extern RT_MODEL_UNO_velocidad_T *const UNO_velocidad_M;
-extern volatile boolean_T stopRequested;
-extern volatile boolean_T runModel;
 
 /*-
  * The generated code includes comments that allow you to trace directly
@@ -180,7 +128,7 @@ extern volatile boolean_T runModel;
  * '<S37>'  : 'UNO_velocidad/Discrete PID Controller/P Copy/Disabled'
  * '<S38>'  : 'UNO_velocidad/Discrete PID Controller/Parallel P Gain/Internal Parameters'
  * '<S39>'  : 'UNO_velocidad/Discrete PID Controller/Reset Signal/Disabled'
- * '<S40>'  : 'UNO_velocidad/Discrete PID Controller/Saturation/Passthrough'
+ * '<S40>'  : 'UNO_velocidad/Discrete PID Controller/Saturation/Enabled'
  * '<S41>'  : 'UNO_velocidad/Discrete PID Controller/Saturation Fdbk/Disabled'
  * '<S42>'  : 'UNO_velocidad/Discrete PID Controller/Sum/Sum_PID'
  * '<S43>'  : 'UNO_velocidad/Discrete PID Controller/Sum Fdbk/Disabled'

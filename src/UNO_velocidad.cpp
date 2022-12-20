@@ -5,10 +5,10 @@
  *
  * Model version                  : 1.4
  * Simulink Coder version         : 9.5 (R2021a) 14-Nov-2020
- * C/C++ source code generated on : Mon Dec 19 21:42:51 2022
+ * C/C++ source code generated on : Mon Dec 19 21:53:39 2022
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: Custom Processor->Custom Processor
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
@@ -58,12 +58,8 @@ void UNO_velocidad_step(void)
   long currT = micros();
   float deltaT = ((float)(currT - prevT)) / 1.0e6;
 
-  UNO_velocidad_Y.VELOCIDAD = ((pulsos - pulsos_prev)/deltaT)/
-                                  UNO_velocidad_P.Constant4_Value * UNO_velocidad_P.Constant5_Value *
-                                  UNO_velocidad_P.Constant3_Value +
-                              (UNO_velocidad_P.Constant7_Value -
-                               UNO_velocidad_P.Constant3_Value) *
-                                  UNO_velocidad_Y.VELOCIDAD;
+  UNO_velocidad_Y.VELOCIDAD = (pulsos - pulsos_prev) / deltaT / 374.0 * 60.0 * 0.001 +
+                              0.999 * UNO_velocidad_Y.VELOCIDAD;
 
   prevT = currT;
   pulsos_prev = pulsos;
@@ -79,45 +75,50 @@ void UNO_velocidad_step(void)
    *  Gain: '<S27>/Derivative Gain'
    *  Sum: '<S28>/SumD'
    */
-  rtb_FilterCoefficient = (UNO_velocidad_P.DiscretePIDController_D *
-                               UNO_velocidad_Y.ERROR -
+  rtb_FilterCoefficient = (0.0 * UNO_velocidad_Y.ERROR -
                            UNO_velocidad_DW.Filter_DSTATE) *
-                          UNO_velocidad_P.DiscretePIDController_N;
+                          1000.0;
 
-  /* Outport: '<Root>/PWM' incorporates:
+  /* Sum: '<S42>/Sum' incorporates:
    *  DiscreteIntegrator: '<S33>/Integrator'
    *  Gain: '<S38>/Proportional Gain'
-   *  Sum: '<S42>/Sum'
    */
-  UNO_velocidad_Y.PWM = (UNO_velocidad_P.DiscretePIDController_P *
-                             UNO_velocidad_Y.ERROR +
+  UNO_velocidad_Y.PWM = (1.22 * UNO_velocidad_Y.ERROR +
                          UNO_velocidad_DW.Integrator_DSTATE) +
                         rtb_FilterCoefficient;
+
+  /* Saturate: '<S40>/Saturation' */
+  if (UNO_velocidad_Y.PWM > 255.0)
+  {
+    /* Sum: '<S42>/Sum' incorporates:
+     *  Outport: '<Root>/PWM'
+     */
+    UNO_velocidad_Y.PWM = 255.0;
+  }
+  else if (UNO_velocidad_Y.PWM < 0.0)
+  {
+    /* Sum: '<S42>/Sum' incorporates:
+     *  Outport: '<Root>/PWM'
+     */
+    UNO_velocidad_Y.PWM = 0.0;
+  }
+
+  /* End of Saturate: '<S40>/Saturation' */
 
   /* Update for DiscreteIntegrator: '<S33>/Integrator' incorporates:
    *  Gain: '<S30>/Integral Gain'
    */
-  UNO_velocidad_DW.Integrator_DSTATE += UNO_velocidad_P.DiscretePIDController_I *
-                                        UNO_velocidad_Y.ERROR * UNO_velocidad_P.Integrator_gainval;
+  UNO_velocidad_DW.Integrator_DSTATE += 2.2592592592592591 *
+                                        UNO_velocidad_Y.ERROR * 0.0005;
 
   /* Update for DiscreteIntegrator: '<S28>/Filter' */
-  UNO_velocidad_DW.Filter_DSTATE += UNO_velocidad_P.Filter_gainval *
-                                    rtb_FilterCoefficient;
+  UNO_velocidad_DW.Filter_DSTATE += 0.0005 * rtb_FilterCoefficient;
 }
 
 /* Model initialize function */
 void UNO_velocidad_initialize(void)
 {
-  /* InitializeConditions for Delay: '<Root>/Delay2' */
-  UNO_velocidad_Y.VELOCIDAD = UNO_velocidad_P.Delay2_InitialCondition;
-
-  /* InitializeConditions for DiscreteIntegrator: '<S33>/Integrator' */
-  UNO_velocidad_DW.Integrator_DSTATE =
-      UNO_velocidad_P.DiscretePIDController_Initial_f;
-
-  /* InitializeConditions for DiscreteIntegrator: '<S28>/Filter' */
-  UNO_velocidad_DW.Filter_DSTATE =
-      UNO_velocidad_P.DiscretePIDController_InitialCo;
+  /* (no initialization code required) */
 }
 
 /* Model terminate function */
